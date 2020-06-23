@@ -1,0 +1,31 @@
+{
+  "name": "frontend-project-lvl2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimassspb/frontend-project-lvl2.git"
+  },
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
+  "author": "Dmitrii Isakov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dimassspb/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/dimassspb/frontend-project-lvl2#readme",
+  "devDependencies": {
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2"
+  },
+  "dependencies": {
+    "commander": "^5.1.0"
+  }
+}
