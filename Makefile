@@ -7,7 +7,4 @@ publish:
 make lint:
 	npx eslint .
 
-gendiff -h:
-	node bin/gendiff.js
-
-.PHONY: test gendiff -h make lint publish
+.PHONY: 
