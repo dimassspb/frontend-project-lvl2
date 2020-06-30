@@ -8,7 +8,7 @@ export default () => {
     .option('-f, --format [type]', 'output format')
     .arguments('<path1> <path2>');
   program.action((path1, path2) => {
-    const result = makeDifference(path1, path2, program.format);
+    const result = makeDifference(path1, path2);
     console.log(result);
   });
 
