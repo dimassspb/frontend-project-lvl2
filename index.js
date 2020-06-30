@@ -28,7 +28,7 @@ const genDiff = (data1, data2) => _.union(Object.keys(data1), Object.keys(data2)
 const makeDifference = (path1, path2) => {
   const data1 = readFile(path1);
   const data2 = readFile(path2);
-  const result = genDiff(data1, data2), format;
+  const result = genDiff(data1, data2);
   return result;
 };
 export default makeDifference;
