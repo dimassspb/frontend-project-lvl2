@@ -1,34 +1,37 @@
 import fs from 'fs';
 import path from 'path';
-import _ from 'lodash';
+import genDiff from './difference.js';
 
 const readFile = (filePath) => {
-  const fullPath = path.resolve(filePath, process.cwd());
-  const data = fs.readFileSync(filePath).toString();
-  return [fullPath, data];
+  const fileData = fs.readFileSync(path.resolve(filePath), 'utf-8');// unicode transformation format;
+  return JSON.parse(fileData);
+};
+const whiteSpace = '  ';
+const tree = (items) => {
+  const makeString = (data) => data.map(({
+    type, name, newValue, oldValue,
+  }) => {
+    switch (type) {
+      case 'compare':
+        return `${whiteSpace}  ${name}: {\n${makeString(newValue)}`;
+      case 'unchanged':
+        return `${whiteSpace}  ${name}: ${oldValue}`;
+      case 'removed':
+        return `${whiteSpace}- ${name}: ${oldValue}`;
+      case 'added':
+        return `${whiteSpace}+ ${name}: ${newValue}`;
+      case 'changed':
+        return `${whiteSpace}+ ${name}: ${newValue}\n${whiteSpace}- ${name}: ${oldValue}`;
+      default:
+        throw new Error(`Unknown type: ${type}`);
+    }
+  }).join('\n');
+  return `{\n${makeString(items)}\n}`;
+};
+const makeDifference = (path1, path2, format) => {
+  const dataBefore = readFile(path1);
+  const dataAfter = readFile(path2);
+  return tree(genDiff(dataBefore, dataAfter), format);
 };
 
-const genDiff = (data1, data2) => _.union(Object.keys(data1), Object.keys(data2)).map((key) => {
-  if (!_.has(data2, key)) {
-    return { type: 'removed', name: key, oldValue: data1[key] };
-  }
-  if (!_.has(data1, key)) {
-    return { type: 'added', name: key, newValue: data2[key] };
-  }
-  if (data1[key] === data2[key]) {
-    return { type: 'unchanged', name: key, oldValue: data1[key] };
-  }
-  if ((typeof data1[key] === 'object') && (typeof data2[key] === 'object')) {
-    return { type: 'changed', name: key, newValue: genDiff(data1[key], data2[key]) };
-  }
-  return {
-    type: 'modified', name: key, newValue: data2[key], oldValue: data1[key],
-  };
-});
-const makeDifference = (path1, path2) => {
-  const data1 = (readFile(path1));
-  const data2 = (readFile(path2));
-  const result = genDiff(data1, data2);
-  return result;
-};
 export default makeDifference;
