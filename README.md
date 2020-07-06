@@ -18,5 +18,9 @@ SETUP:
 	$ npm link
 	
 
-RUN GAME:
+RUN gendiff before.json after.json: 
+
+	$ gendiff before.json after.json
+
+[![asciicast](https://asciinema.org/a/rMZeaxoGDX5QYeFfKa5gGg0oL.svg)](https://asciinema.org/a/rMZeaxoGDX5QYeFfKa5gGg0oL)
 
