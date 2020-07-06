@@ -3,8 +3,8 @@ import path from 'path';
 import genDiff from './difference.js';
 
 const readFile = (filePath) => {
-  const analysisFileData = fs.readFileSync(path.resolve(filePath), 'utf-8');// unicode transformation fofmat;
-  return JSON.parse(analysisFileData);
+  const fileData = fs.readFileSync(path.resolve(filePath), 'utf-8');// unicode transformation format;
+  return JSON.parse(fileData);
 };
 
 const whiteSpace = '  ';
