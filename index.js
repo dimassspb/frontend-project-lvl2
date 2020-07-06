@@ -3,9 +3,10 @@ import path from 'path';
 import genDiff from './difference.js';
 
 const readFile = (filePath) => {
-  const fileData = fs.readFileSync(path.resolve(filePath), 'utf-8');// unicode transformation format;
-  return JSON.parse(fileData);
+  const analysisFileData = fs.readFileSync(path.resolve(filePath), 'utf-8');// unicode transformation fofmat;
+  return JSON.parse(analysisFileData);
 };
+
 const whiteSpace = '  ';
 const tree = (items) => {
   const makeString = (data) => data.map(({
