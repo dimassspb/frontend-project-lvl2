@@ -10,4 +10,7 @@ make lint:
 test:
 	npm test
 
-.PHONY:
+test-coverage:
+	npm test --coverage
+
+.PHONY: test
