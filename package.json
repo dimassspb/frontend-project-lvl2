@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
+  },
   "scripts": {
-    "test": "jest"
+    "test": "npx -n --experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",
@@ -24,10 +28,13 @@
     "eslint": "^7.3.1",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.21.2",
-    "jest": "^26.1.0"
+    "jest": "^26.1.0",
+    "jest-cli": "^26.1.0"
   },
   "dependencies": {
+    "@jest/globals": "^26.1.0",
     "commander": "^5.1.0",
+    "ini": "^1.3.5",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15"
   }
