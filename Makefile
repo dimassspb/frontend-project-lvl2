@@ -7,7 +7,7 @@ publish:
 make lint:
 	npx eslint .
 
-watch:
-	npx jest --watch
+test:
+	npm test
 
-.PHONY: 
+.PHONY:
