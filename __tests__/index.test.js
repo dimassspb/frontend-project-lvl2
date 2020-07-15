@@ -11,7 +11,7 @@ const expected = `{
   + verbose: true
 }`;
 
-test('Сomparing two .json files', () => {
+test('Сomparing two flat .json files', () => {
     const path1 = path.join(commonPath, 'before.json');
     const path2 = path.join(commonPath, 'after.json');
 expect(makeDifference(path1, path2)).toBe(expected);
@@ -23,7 +23,7 @@ test('Сomparing two .yaml files', () => {
 expect(makeDifference(path1, path2)).toBe(expected);
 });
 
-test('Сomparing two .ini files', () => {
+test('Сomparing two .json files', () => {
     const path1 = path.join(commonPath, 'before.ini');
     const path2 = path.join(commonPath, 'after.ini');
 expect(makeDifference(path1, path2)).toBe(expected);
