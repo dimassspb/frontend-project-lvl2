@@ -12,15 +12,15 @@ const stylish = (items) => {
       type, name, newValue, oldValue,
     }) => {
       switch (type) {
-        type 'added':
+        case 'added':
           return `${indent}+ ${name}: ${stringify(newValue, indent)}`;
-        type 'removed':
+        case 'removed':
           return `${indent}- ${name}: ${stringify(oldValue, indent)}`;
-        type 'changed':
+        case 'changed':
           return `${indent}+ ${name}: ${stringify(newValue, indent)}\n${indent}- ${name}: ${stringify(oldValue, indent)}`;
-        type 'unchanged':
+        case 'unchanged':
           return `${indent}  ${name}: ${stringify(oldValue, indent)}`;
-        type 'compare':
+        case 'compare':
           return `${indent}  ${name}: {\n${makeString(newValue, indentCounter + 2)}\n${indent}${whiteSpace}}`;
         default:
           throw new Error(`Unknown state: ${type}`);
