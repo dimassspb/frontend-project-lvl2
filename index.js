@@ -2,42 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import genDiff from './difference.js';
 import parse from './parsers.js';
+import stylish from './formatters/stylish.js';
 
 const readFile = (filePath) => {
   const fileData = fs.readFileSync(path.resolve(filePath), 'utf-8');
   const extnameFile = path.extname(filePath).slice(1);
   return parse(fileData, extnameFile);
-};
-const whiteSpace = '  ';
-const stringify = (data, indent) => {
-  if (!(data instanceof Object)) {
-    return data;
-  }
-  return Object.entries(data).map(([key, value]) => `{\n${indent}${whiteSpace.repeat(3)}${key}: ${value}\n${indent}${whiteSpace}}`);
-};
-const stylish = (items) => {
-  const makeString = (data, indentCounter) => {
-    const indent = whiteSpace.repeat(indentCounter);
-    return data.map(({
-      type, name, newValue, oldValue,
-    }) => {
-      switch (type) {
-        case 'added':
-          return `${indent}+ ${name}: ${stringify(newValue, indent)}`;
-        case 'removed':
-          return `${indent}- ${name}: ${stringify(oldValue, indent)}`;
-        case 'changed':
-          return `${indent}+ ${name}: ${stringify(newValue, indent)}\n${indent}- ${name}: ${stringify(oldValue, indent)}`;
-        case 'unchanged':
-          return `${indent}  ${name}: ${stringify(oldValue, indent)}`;
-        case 'compare':
-          return `${indent}  ${name}: {\n${makeString(newValue, indentCounter + 2)}\n${indent}${whiteSpace}}`;
-        default:
-          throw new Error(`Unknown state: ${type}`);
-      }
-    }).join('\n');
-  };
-  return `{\n${makeString(items, 1)}\n}`;
 };
 const makeDifference = (path1, path2, format) => {
   const dataBefore = readFile(path1);
