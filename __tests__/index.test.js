@@ -17,10 +17,16 @@ test('Сomparing two flat .json files', () => {
 expect(makeDifference(path1, path2)).toBe(expected);
 });
 
-test('Сomparing two .yaml files', () => {
+test('Сomparing two flat .yaml files', () => {
     const path1 = path.join(commonPath, 'before.yaml');
     const path2 = path.join(commonPath, 'after.yaml');
 expect(makeDifference(path1, path2)).toBe(expected);
+});
+
+test('Сomparing two flat .ini files', () => {
+    const path1 = path.join(commonPath, 'filepath1.json');
+    const path2 = path.join(commonPath, 'filepath2.json');
+expect(makeDifference(path1, path2)).toBe(expected1);
 });
 
 test('Сomparing two .json files', () => {
@@ -64,8 +70,3 @@ const expected1 = `{
     }
 }`;
 
-test('Сomparing two .ini files', () => {
-    const path1 = path.join(commonPath, 'filepath1.json');
-    const path2 = path.join(commonPath, 'filepath2.json');
-expect(makeDifference(path1, path2)).toBe(expected1);
-});
