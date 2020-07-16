@@ -23,7 +23,7 @@ const stylish = (items) => {
         case 'compare':
           return `${indent}  ${name}: {\n${makeString(newValue, indentCounter + 2)}\n${indent}${whiteSpace}}`;
         default:
-          throw new Error(`Unknown state: ${type}`);
+          throw new Error(`Unknown type: ${type}`);
       }
     }).join('\n');
   };
