@@ -12,7 +12,6 @@ LINT CODE:
 	
 	$ make lint
 
-
 SETUP:
 	
 	$ npm publish --dry-run
@@ -20,9 +19,16 @@ SETUP:
 	$ npm link
 	
 
-RUN gendiff before.json after.json: 
+RUN: 
 
-	$ gendiff before.json after.json
+	$ gendiff -h
+
+[![asciicast](https://asciinema.org/a/ASZ92S4leWtTC3TVzUYy6c5jG.svg)](https://asciinema.org/a/ASZ92S4leWtTC3TVzUYy6c5jG)
+
+
+        $ gendiff before.json after.json
 
 [![asciicast](https://asciinema.org/a/rMZeaxoGDX5QYeFfKa5gGg0oL.svg)](https://asciinema.org/a/rMZeaxoGDX5QYeFfKa5gGg0oL)
+
+
 
