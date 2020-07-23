@@ -16,7 +16,7 @@
     "url": "git+https://github.com/dimassspb/frontend-project-lvl2.git"
   },
   "bin": {
-    "gendiff": "bin/gendiff.js"
+    "gendiff": "src/bin/gendiff.js"
   },
   "author": "Dmitrii Isakov",
   "license": "ISC",
@@ -36,6 +36,6 @@
     "commander": "^5.1.0",
     "ini": "^1.3.5",
     "js-yaml": "^3.14.0",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.19"
   }
 }
