@@ -12,6 +12,14 @@ LINT CODE:
 	
 	$ make lint
 
+TESTS:
+
+	$ make test
+
+	$ make test-coverage
+
+[![asciicast](https://asciinema.org/a/uMN8BhH96seiT0zxfgDVAGuvb.svg)](https://asciinema.org/a/uMN8BhH96seiT0zxfgDVAGuvb)
+
 SETUP:
 	
 	$ npm publish --dry-run
@@ -31,4 +39,26 @@ RUN:
 [![asciicast](https://asciinema.org/a/rMZeaxoGDX5QYeFfKa5gGg0oL.svg)](https://asciinema.org/a/rMZeaxoGDX5QYeFfKa5gGg0oL)
 
 
+        $ gendiff before.yaml after.yaml
 
+[![asciicast](https://asciinema.org/a/rbpXkU2jAnD9ZCMMGdOqvJ07U.svg)](https://asciinema.org/a/rbpXkU2jAnD9ZCMMGdOqvJ07U)
+
+
+        $ gendiff before.ini after.ini
+
+[![asciicast](https://asciinema.org/a/22cPaeRSjBSXZsFXW20P91P4H.svg)](https://asciinema.org/a/22cPaeRSjBSXZsFXW20P91P4H)
+
+
+        $ gendiff filepath1.json filepath2.json
+
+[![asciicast](https://asciinema.org/a/b4Ht3Os6SrtnmeO0i1hPFm2ZR.svg)](https://asciinema.org/a/b4Ht3Os6SrtnmeO0i1hPFm2ZR)
+
+
+        $ gendiff --format plain filepath1.json filepath2.json
+
+[![asciicast](https://asciinema.org/a/ya26HhVKxHIlrfmNIk8Bl6hap.svg)](https://asciinema.org/a/ya26HhVKxHIlrfmNIk8Bl6hap)
+
+
+        $ gendiff --format json filepath1.json filepath2.json
+
+[![asciicast](https://asciinema.org/a/2DTB4C5x2kpgI13JF8JZdR4QH.svg)](https://asciinema.org/a/2DTB4C5x2kpgI13JF8JZdR4QH)
