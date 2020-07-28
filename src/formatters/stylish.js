@@ -34,4 +34,3 @@ const stylish = (items) => {
   return `{\n${makeString(items, 1)}\n}`;
 };
 export default stylish;
-
