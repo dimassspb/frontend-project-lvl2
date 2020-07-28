@@ -10,7 +10,7 @@ const plain = (items) => {
   }) => {
     const key = getPath(path, name);
     switch (type) {
-      case 'compare':
+      case 'nested':
         return makeString(newValue, key);
       case 'removed':
         return `Property '${key}' was removed.`;
