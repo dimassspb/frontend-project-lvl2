@@ -1,6 +1,10 @@
+import pkg from 'lodash';
+
+const { isObject } = pkg;
+
 const whiteSpace = '  ';
 const stringify = (data, indent) => {
-  if (!(data instanceof Object)) {
+  if (!isObject(data)) {
     return data;
   }
   return Object.entries(data).map(([key, value]) => `{\n${indent}${whiteSpace.repeat(3)}${key}: ${value}\n${indent}${whiteSpace}}`);
@@ -20,7 +24,7 @@ const stylish = (items) => {
           return `${indent}+ ${name}: ${stringify(newValue, indent)}\n${indent}- ${name}: ${stringify(oldValue, indent)}`;
         case 'unchanged':
           return `${indent}  ${name}: ${stringify(oldValue, indent)}`;
-        case 'compare':
+        case 'nested':
           return `${indent}  ${name}: {\n${makeString(newValue, indentCounter + 2)}\n${indent}${whiteSpace}}`;
         default:
           throw new Error(`Unknown type: ${type}`);
@@ -30,3 +34,4 @@ const stylish = (items) => {
   return `{\n${makeString(items, 1)}\n}`;
 };
 export default stylish;
+
