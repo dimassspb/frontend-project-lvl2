@@ -11,7 +11,7 @@ const render = (keys, depth = 0) => {
   const strings = keys.map(({
     type, key, value, oldValue, newValue, children,
   }) => {
-    const renderKeyValue = (sign, val) => `${' '.repeat(depth)} ${sign} ${key}: ${renderValue(val, depth)}\n`;
+    const renderKeyValue = (sign, value) => `${' '.repeat(depth)} ${sign} ${key}: ${renderValue(value, depth)}\n`;
     switch (type) {
       case 'added':
         return renderKeyValue('+', value);
