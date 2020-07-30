@@ -1,24 +1,22 @@
-import pkg from 'lodash';
-
-const { isObject, union, has } = pkg;
+import _ from 'lodash';
 
 const buildAst = (dataBefore, dataAfter) => {
-  const keys = union(Object.keys(dataBefore), Object.keys(dataAfter)).sort();
+  const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter)).sort();
   return keys.map((key) => {
-    if (!has(dataAfter, key)) {
-      return { type: 'removed', name: key, oldValue: dataBefore[key] };
+    if (!_.has(dataAfter, key)) {
+      return { type: 'removed', key, value: dataBefore[key] };
     }
-    if (!has(dataBefore, key)) {
-      return { type: 'added', name: key, newValue: dataAfter[key] };
+    if (!_.has(dataBefore, key)) {
+      return { type: 'added', key, value: dataAfter[key] };
     }
     if (dataBefore[key] === dataAfter[key]) {
-      return { type: 'unchanged', name: key, oldValue: dataBefore[key] };
+      return { type: 'unchanged', key, value: dataBefore[key] };
     }
-    if (isObject(dataBefore[key]) && isObject(dataAfter[key])) {
-      return { type: 'nested', name: key, newValue: buildAst(dataBefore[key], dataAfter[key]) };
+    if (_.isObject(dataBefore[key]) && _.isObject(dataAfter[key])) {
+      return { type: 'nested', key, children: buildAst(dataBefore[key], dataAfter[key]) };
     }
     return {
-      type: 'changed', name: key, newValue: dataAfter[key], oldValue: dataBefore[key],
+      type: 'changed', key, newValue: dataAfter[key], oldValue: dataBefore[key],
     };
   });
 };

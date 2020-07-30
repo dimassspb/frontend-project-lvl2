@@ -1,29 +1,29 @@
-const getPath = (ancestry, name) => (ancestry.length === 0 ? name : `${ancestry}.${name}`);
 const stringify = (value) => {
-  if (value instanceof Object) return '[complex value]';
+  if (typeof value === 'object') return '[complex value]';
   if (typeof value === 'string') return `'${value}'`;
   return value;
 };
-const plain = (items) => {
-  const makeString = (data, path) => data.map(({
-    type, name, newValue, oldValue,
-  }) => {
-    const key = getPath(path, name);
-    switch (type) {
-      case 'nested':
-        return makeString(newValue, key);
-      case 'removed':
-        return `Property '${key}' was removed.`;
-      case 'added':
-        return `Property '${key}' was added with value: ${stringify(newValue)}.`;
-      case 'changed':
-        return `Property '${key}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}.`;
-      case 'unchanged':
-        return false;
-      default:
-        throw new Error(`Unknown type: ${type}`);
-    }
-  }).filter((item) => item).join('\n');
-  return makeString(items, '');
+
+const getPlain = (diff) => {
+  const iter = (innerDiff, path) => innerDiff
+    .filter(({ type }) => type !== 'unchanged')
+    .map(({
+      key, type, value, oldValue, newValue, children,
+    }) => {
+      const newPath = path.length <= 1 ? key : [path, key].join('.');
+      switch (type) {
+        case 'added':
+          return `Property '${newPath}' was added with value: ${stringify(value)}`;
+        case 'removed':
+          return `Property '${newPath}' was removed`;
+        case 'changed':
+          return `Property '${newPath}' was changed from ${stringify(oldValue)} to ${stringify(newValue)}`;
+        case 'nested':
+          return iter(children, newPath);
+        default:
+          throw new Error(`Unexpected type: '${type}'.`);
+      }
+    }).join('\n');
+  return iter(diff, []);
 };
-export default plain;
+export default getPlain;

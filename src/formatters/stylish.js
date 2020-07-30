@@ -1,36 +1,33 @@
-import pkg from 'lodash';
+import _ from 'lodash';
 
-const { isObject } = pkg;
-
-const whiteSpace = '  ';
-const stringify = (data, indent) => {
-  if (!isObject(data)) {
-    return data;
+const renderValue = (value, depth) => {
+  if (!_.isObject(value)) {
+    return value;
   }
-  return Object.entries(data).map(([key, value]) => `{\n${indent}${whiteSpace.repeat(3)}${key}: ${value}\n${indent}${whiteSpace}}`);
+  const valueKeys = Object.keys(value).map((key) => `${' '.repeat(depth + 6)}${key}: ${value[key]}\n`);
+  return `{\n${valueKeys.join('')}${' '.repeat(depth + 3)}}`;
 };
-const stylish = (items) => {
-  const makeString = (data, indentCounter) => {
-    const indent = whiteSpace.repeat(indentCounter);
-    return data.map(({
-      type, name, newValue, oldValue,
-    }) => {
-      switch (type) {
-        case 'added':
-          return `${indent}+ ${name}: ${stringify(newValue, indent)}`;
-        case 'removed':
-          return `${indent}- ${name}: ${stringify(oldValue, indent)}`;
-        case 'changed':
-          return `${indent}+ ${name}: ${stringify(newValue, indent)}\n${indent}- ${name}: ${stringify(oldValue, indent)}`;
-        case 'unchanged':
-          return `${indent}  ${name}: ${stringify(oldValue, indent)}`;
-        case 'nested':
-          return `${indent}  ${name}: {\n${makeString(newValue, indentCounter + 2)}\n${indent}${whiteSpace}}`;
-        default:
-          throw new Error(`Unknown type: ${type}`);
-      }
-    }).join('\n');
-  };
-  return `{\n${makeString(items, 1)}\n}`;
+const render = (keys, depth = 0) => {
+  const strings = keys.map(({
+    type, key, value, oldValue, newValue, children,
+  }) => {
+    const renderKeyValue = (sign, val) => `${' '.repeat(depth)} ${sign} ${key}: ${renderValue(val, depth)}\n`;
+    switch (type) {
+      case 'added':
+        return renderKeyValue('+', value);
+      case 'removed':
+        return renderKeyValue('-', value);
+      case 'unchanged':
+        return renderKeyValue(' ', value);
+      case 'changed':
+        return [renderKeyValue('+', newValue), renderKeyValue('-', oldValue)];
+      case 'nested':
+        return `${' '.repeat(depth + 3)}${key}: ${render(children, depth + 3)}\n`;
+      default:
+        throw new Error('Error!!! Unknown type.');
+    }
+  });
+  return `{\n${_.flattenDeep(strings).join('')}${' '.repeat(depth)}}`;
 };
-export default stylish;
+
+export default render;
