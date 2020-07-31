@@ -8,7 +8,7 @@ const renderValue = (value, depth) => {
   return `{\n${valueKeys.join('')}${' '.repeat(depth + 3)}}`;
 };
 const render = (keys, depth = 0) => {
-  const strings = keys.map(({
+  const buildString = keys.map(({
     type, key, value, oldValue, newValue, children,
   }) => {
     const renderKeyValue = (sign, value) => `${' '.repeat(depth)} ${sign} ${key}: ${renderValue(value, depth)}\n`;
@@ -27,7 +27,7 @@ const render = (keys, depth = 0) => {
         throw new Error('Error!!! Unknown type.');
     }
   });
-  return `{\n${_.flattenDeep(strings).join('')}${' '.repeat(depth)}}`;
+  return `{\n${_.flattenDeep(buildString).join('')}${' '.repeat(depth)}}`;
 };
 
 export default render;
