@@ -3,27 +3,12 @@ const stringify = (value) => {
   if (typeof value === 'string') return `'${value}'`;
   return value;
 };
-
-const getPlain = (diff) => {
-  const iter = (innerDiff, path) => innerDiff
-    .filter(({ type }) => type !== 'unchanged')
-    .map(({
-      key, type, value, oldValue, newValue, children,
-    }) => {
-      const newPath = path.length <= 1 ? key : [path, key].join('.');
-      switch (type) {
-        case 'added':
-          return `Property '${newPath}' was added with value: ${stringify(value)}`;
-        case 'removed':
-          return `Property '${newPath}' was removed`;
-        case 'changed':
-          return `Property '${newPath}' was changed from ${stringify(oldValue)} to ${stringify(newValue)}`;
-        case 'nested':
-          return iter(children, newPath);
-        default:
-          throw new Error(`Unexpected type: '${type}'.`);
-      }
-    }).join('\n');
-  return iter(diff, []);
+const getTypeTree = {
+  unchanged: () => null,
+  added: ({ key, value }, path) => (`Property '${path}${key}' was added with value: ${stringify(value)}`),
+  removed: ({ key }, path) => `Property '${path}${key}' was removed`,
+  changed: ({ key, oldValue, newValue }, path) => (`Property '${path}${key}' was changed from ${stringify(oldValue)} to ${stringify(newValue)}`),
+  nested: ({ key, children }, path, render) => render(children, `${path}${key}.`),
 };
-export default getPlain;
+const render = (diff, path) => diff.map((node) => getTypeTree[node.type](node, path, render)).filter((node) => node).join('\n');
+export default (diff) => render(diff, '');

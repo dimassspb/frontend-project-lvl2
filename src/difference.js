@@ -9,11 +9,11 @@ const buildAst = (dataBefore, dataAfter) => {
     if (!_.has(dataBefore, key)) {
       return { type: 'added', key, value: dataAfter[key] };
     }
-    if (dataBefore[key] === dataAfter[key]) {
-      return { type: 'unchanged', key, value: dataBefore[key] };
-    }
     if (_.isObject(dataBefore[key]) && _.isObject(dataAfter[key])) {
       return { type: 'nested', key, children: buildAst(dataBefore[key], dataAfter[key]) };
+    }
+    if (dataBefore[key] === dataAfter[key]) {
+      return { type: 'unchanged', key, value: dataBefore[key] };
     }
     return {
       type: 'changed', key, newValue: dataAfter[key], oldValue: dataBefore[key],

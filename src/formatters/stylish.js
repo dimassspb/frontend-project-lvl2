@@ -1,33 +1,20 @@
 import _ from 'lodash';
 
+const indent = (depth) => ' '.repeat(depth * 2);
 const renderValue = (value, depth) => {
   if (!_.isObject(value)) {
     return value;
   }
-  const valueKeys = Object.keys(value).map((key) => `${' '.repeat(depth + 6)}${key}: ${value[key]}\n`);
-  return `{\n${valueKeys.join('')}${' '.repeat(depth + 3)}}`;
+  const entries = Object.keys(value).map((key) => `${indent(depth + 2)}${key}: ${value[key]}`);
+  return ['{', ...entries, `${indent(depth)}}`].join('\n');
 };
-const render = (keys, depth = 0) => {
-  const buildString = keys.map(({
-    type, key, value, oldValue, newValue, children,
-  }) => {
-    const renderKeyValue = (sign, value) => `${' '.repeat(depth)} ${sign} ${key}: ${renderValue(value, depth)}\n`;
-    switch (type) {
-      case 'added':
-        return renderKeyValue('+', value);
-      case 'removed':
-        return renderKeyValue('-', value);
-      case 'unchanged':
-        return renderKeyValue(' ', value);
-      case 'changed':
-        return [renderKeyValue('+', newValue), renderKeyValue('-', oldValue)];
-      case 'nested':
-        return `${' '.repeat(depth + 3)}${key}: ${render(children, depth + 3)}\n`;
-      default:
-        throw new Error('Error!!! Unknown type.');
-    }
-  });
-  return `{\n${_.flattenDeep(buildString).join('')}${' '.repeat(depth)}}`;
+const renderKeyValue = (key, value, depth, sign) => (`${indent(depth + 1)}${sign} ${key}: ${renderValue(value, depth + 2)}`);
+const getTypeTree = {
+  added: ({ key, value }, depth) => renderKeyValue(key, value, depth, '+'),
+  removed: ({ key, value }, depth) => renderKeyValue(key, value, depth, '-'),
+  unchanged: ({ key, value }, depth) => renderKeyValue(key, value, depth, ' '),
+  changed: ({ key, oldValue, newValue }, depth) => [`${renderKeyValue(key, newValue, depth, '+')}`, `${renderKeyValue(key, oldValue, depth, '-')}`],
+  nested: ({ key, children }, depth, render) => `${indent(depth + 2)}${key}: {\n${render(children, depth + 2)}\n${indent(depth + 2)}}`,
 };
-
-export default render;
+const render = (diff, depth) => diff.map((node) => getTypeTree[node.type](node, depth, render));
+export default (diff) => `{\n${_.flattenDeep(render(diff, 0))}\n}`.split(',').join('\n');
