@@ -1,7 +1,7 @@
 import getStylish from './stylish.js';
 import getPlain from './plain.js';
-import getJson from './json.js';
 
+const getJson = (data) => JSON.stringify(data, null, 2);
 const render = {
   stylish: getStylish,
   json: getJson,

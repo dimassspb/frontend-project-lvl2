@@ -9,9 +9,9 @@ const getData = (filePath) => {
   const extnameFile = path.extname(filePath).slice(1);
   return parse(extnameFile, fileData);
 };
-const makeDifference = (path1, path2, format) => {
+export default (path1, path2, format = 'stylish') => {
   const dataBefore = getData(path1);
   const dataAfter = getData(path2);
   return render(buildAst(dataBefore, dataAfter), format);
 };
-export default makeDifference;
+//export default makeDifference;
