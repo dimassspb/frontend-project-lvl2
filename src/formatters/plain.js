@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const stringify = (value) => {
   if (typeof value === 'object') return '[complex value]';
   if (typeof value === 'string') return `'${value}'`;
@@ -11,6 +13,6 @@ const mapping = {
   nested: ({ key, children }, path, render) => render(children, `${path}${key}.`),
 };
 const render = (diff, path) => diff
-  .filter((node) => node.type !== 'unchanged')
-  .map((node) => mapping[node.type](node, path, render)).join('\n');
-export default (diff) => render(diff, []);
+  .reduce((acc, node) => _.flatten([...acc, mapping[node.type](node, path, render)]), []);
+
+export default (diff) => render(diff, []).join('\n');

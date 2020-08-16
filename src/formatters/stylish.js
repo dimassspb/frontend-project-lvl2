@@ -16,5 +16,5 @@ const mapping = {
   changed: ({ key, oldValue, newValue }, depth) => [`${renderKeyValue(key, newValue, depth, '+')}`, `${renderKeyValue(key, oldValue, depth, '-')}`],
   nested: ({ key, children }, depth, render) => `${indent(depth + 2)}${key}: {\n${render(children, depth + 2)}\n${indent(depth + 2)}}`,
 };
-const render = (diff, depth) => diff.map((node) => mapping[node.type](node, depth, render));
-export default (diff) => `{\n${_.flattenDeep(render(diff, 0))}\n}`.split(',').join('\n');
+const render = (diff, depth) => diff.flatMap((node) => mapping[node.type](node, depth, render));
+export default (diff) => `{\n${render(diff, 0)}\n}`.split(',').join('\n');

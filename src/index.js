@@ -14,4 +14,3 @@ export default (path1, path2, format = 'stylish') => {
   const dataAfter = getData(path2);
   return render(buildAst(dataBefore, dataAfter), format);
 };
-//export default makeDifference;
