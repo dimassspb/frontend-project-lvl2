@@ -21,6 +21,6 @@ jobs:
       - name: Run linters
         uses: samuelmeuli/lint-action@v1
         with:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          github_token: ${{ secrets.github_token }}
           # Enable linters
           eslint: true
