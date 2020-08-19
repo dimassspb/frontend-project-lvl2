@@ -9,17 +9,17 @@ const stringify = (value, depth) => {
   return ['{', ...entries, `${indent(depth)}}`].join('\n');
 };
 const stringifyNode = (sign, key, value, depth) => `${indent(depth)}  ${sign} ${key}: ${stringify(value, depth + 1)}`;
+const mapping = {
+  added: (node, nodeDepth) => stringifyNode('+', node.key, node.value, nodeDepth),
+  removed: (node, nodeDepth) => stringifyNode('-', node.key, node.value, nodeDepth),
+  unchanged: (node, nodeDepth) => stringifyNode(' ', node.key, node.value, nodeDepth),
+  changed: (node, nodeDepth) => [
+    stringifyNode('+', node.key, node.newValue, nodeDepth),
+    stringifyNode('-', node.key, node.oldValue, nodeDepth),
+  ],
+  nested: (node, nodeDepth, render) => stringifyNode(' ', node.key, render(node.children, nodeDepth + 1), nodeDepth),
+};
 const render = (nodes, depth = 0) => {
-  const mapping = {
-    added: (node, nodeDepth) => stringifyNode('+', node.key, node.value, nodeDepth),
-    removed: (node, nodeDepth) => stringifyNode('-', node.key, node.value, nodeDepth),
-    unchanged: (node, nodeDepth) => stringifyNode(' ', node.key, node.value, nodeDepth),
-    changed: (node, nodeDepth) => [
-      stringifyNode('+', node.key, node.newValue, nodeDepth),
-      stringifyNode('-', node.key, node.oldValue, nodeDepth),
-    ],
-    nested: (node, nodeDepth) => stringifyNode(' ', node.key, render(node.children, nodeDepth + 1), nodeDepth),
-  };
   const result = nodes.flatMap((node) => mapping[node.type](node, depth));
   return ['{', ...result, `${indent(depth)}}`].join('\n');
 };
