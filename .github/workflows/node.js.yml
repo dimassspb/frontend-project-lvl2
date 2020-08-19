@@ -1,71 +1,26 @@
-# This workflow will do a clean install of node dependencies,
-# build the source code and run tests across different versions of node
-# For more information see:
-# https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-# Name of workflow
-name: Node CI
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+name: project2
+on: push
 jobs:
-
-  # This workflow contains a single job called "build"
-  build:
-
-    # The type of runner that the job will run on
+  run-linters:
+    name: Run linters
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        # Node versions list
-        node-version: [14.x]
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
 
-    # Checks-out your repository under $GITHUB_WORKSPACE,
-    # so your job can access it
-    # https://github.com/actions/checkout
-    - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
 
-    # Step's name
-    - name: Use Node.js ${{ matrix.node-version }}
+      # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        run: npm install
 
-      # Configures the node version used on GitHub-hosted runners
-      # https://github.com/actions/setup-node
-      uses: actions/setup-node@v1
-
-      # The Node.js version to configure
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    # Install and build project
-    - name: Install dependencies
-      run: |
-        make install
-      # Add environment variables
-      # https://docs.github.com/en/actions/language-and-framework-guides/using-nodejs-with-github-actions
-      env:
-        CI: true
-    # Run linter
-    - name: Run linter
-      run: |
-        make lint
-    # Run tests and publish code coverage on Code Climate
-    # https://github.com/paambaati/codeclimate-action
-    - name: Test & publish code coverage
-      uses: paambaati/codeclimate-action@v2.6.0
-      # Add Code Climate secret key
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      with:
-        coverageCommand: make test-coverage
-        debug: true
+      - name: Run linters
+        uses: samuelmeuli/lint-action@v1
+        with:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          # Enable linters
+          eslint: true
