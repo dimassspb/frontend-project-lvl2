@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.org/dimassspb/frontend-project-lvl2.svg?branch=master)](https://travis-ci.org/dimassspb/frontend-project-lvl2)
 
 
+Utility for searching differences in configuration files
+
 INSTALL DEPENDENCES:
 	
 	$ make install
