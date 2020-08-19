@@ -5,7 +5,7 @@ const stringify = (value, depth) => {
   if (!_.isObject(value)) {
     return value;
   }
-  const entries = _.keys(value).map((key) => `${indent(depth + 1)}${key}: ${stringify(value[key], depth + 1)}`);
+  const entries = Object.keys(value).map((key) => `${indent(depth + 1)}${key}: ${stringify(value[key], depth + 1)}`);
   return ['{', ...entries, `${indent(depth)}}`].join('\n');
 };
 const stringifyNode = (sign, key, value, depth) => `${indent(depth)}  ${sign} ${key}: ${stringify(value, depth + 1)}`;
