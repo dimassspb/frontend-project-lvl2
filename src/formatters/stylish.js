@@ -20,7 +20,7 @@ const mapping = {
   nested: (node, nodeDepth, render) => stringifyNode(' ', node.key, render(node.children, nodeDepth + 1), nodeDepth),
 };
 const render = (nodes, depth = 0) => {
-  const result = nodes.flatMap((node) => mapping[node.type](node, depth));
+  const result = nodes.flatMap((node) => mapping[node.type](node, depth, render));
   return ['{', ...result, `${indent(depth)}}`].join('\n');
 };
 export default render;
