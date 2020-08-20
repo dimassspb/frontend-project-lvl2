@@ -13,5 +13,5 @@ export default (path1, path2, format = 'stylish') => {
   const dataBefore = getData(path1);
   const dataAfter = getData(path2);
   const diff = buildAst(dataBefore, dataAfter);
-  return render(buildDiff, format);
+  return render(diff, format);
 };
