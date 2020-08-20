@@ -1,8 +1,9 @@
 import _ from 'lodash';
 
 const buildAst = (dataBefore, dataAfter) => {
-  const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter)).sort();
-  return keys.map((key) => {
+  const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter));
+  const sortedKeys = _.sortBy(keys);
+  return sortedKeys.map((key) => {
     if (!_.has(dataAfter, key)) {
       return { type: 'removed', key, value: dataBefore[key] };
     }
